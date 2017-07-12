@@ -23,7 +23,7 @@ router.post('/login', (req, res) => {
             if (!isValid) {
                res.status(401).json({ error: 'Wrong password' }) 
             }
-             const token = jwt.sign(user, 'verysecretstring');
+            const token = jwt.sign(user, 'verysecretstring');
             console.log(user);
             res.json({
                 user: user.apiRepr(),
