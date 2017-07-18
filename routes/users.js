@@ -4,12 +4,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 router.post('/login', (req, res) => {
-    // take data from request body
     const { username, password } = req.body;
-    // const user = new User({
-    //   username,
-    //   password
-    // });
 
     User.findOne({
         username
@@ -21,7 +16,7 @@ router.post('/login', (req, res) => {
 
         user.validatePassword(password).then((isValid) => {
             if (!isValid) {
-               res.status(401).json({ error: 'Wrong password' }) 
+               res.status(401).json({ message: 'Wrong password' }) 
             }
             const token = jwt.sign(user, 'verysecretstring');
             console.log(user);
@@ -46,31 +41,70 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
-    // take data from request body
+    if (!req.body) {
+    return res.status(400).json({message: 'No request body'});
+    }
+
+    if (!('username' in req.body)) {
+    return res.status(422).json({message: 'Missing field: username'});
+    }
+
     const { username, password } = req.body;
 
-    User.hashPassword(password).then((hash) => {
-        const user = new User({
-            username,
-            password: hash // use hash to disguise
-        });
+    if (typeof username !== 'string') {
+    return res.status(422).json({message: 'Incorrect field type: username'});
+    }
 
-        user.save((err, result) => {
-            if (err) {
-                console.error(err);
-                res.send('error');
-            }
-            console.log(result);
-            const token = jwt.sign(result, 'verysecretstring');
-            res.send({ 
-                user: result.apiRepr(),
-                token 
+    username = username.trim();
+
+    if (username === '') {
+    return res.status(422).json({message: 'Incorrect field length: username'});
+    }
+
+    if (!(password)) {
+    return res.status(422).json({message: 'Missing field: password'});
+    }
+
+    if (typeof password !== 'string') {
+    return res.status(422).json({message: 'Incorrect field type: password'});
+    }
+
+    password = password.trim();
+
+    if (password === '') {
+    return res.status(422).json({message: 'Incorrect field length: password'});
+    }
+
+    return User
+    .find({username})
+    .count()
+    .exec()
+    .then(count => {
+        if (count > 0) {
+            return res.status(422).json({message: 'Username already taken'});
+        }
+
+        User.hashPassword(password).then((hash) => {
+            const user = new User({
+                username,
+                password: hash 
             });
-        })
-    }) 
-    
 
-    // console.log(req.body);
+            user.save((err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.send('user was not saved correctly');
+                }
+                console.log(result);
+                const token = jwt.sign(result, 'verysecretstring');
+                res.send({ 
+                    user: result.apiRepr(),
+                    token 
+                });
+            })
+        })
+    
+    });
 });
 
 module.exports = router;

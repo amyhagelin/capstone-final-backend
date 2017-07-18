@@ -25,7 +25,7 @@ const authMiddleware = function(req, res, next) {
     // verifies secret and checks exp
     jwt.verify(token, 'verysecretstring', function(err, decoded) {      
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });    
       } else {
         // if everything is good, save to request for use in other routes
         req.decoded = decoded;    

@@ -3,10 +3,7 @@ const router = express.Router();
 const Event = require('../models/event');
 
 router.get('/', (req, res) => {
-  // TODO: find by user, connect to front endç
-  console.log(req.headers)
-  Event.find({ userId: req.decoded._id }).then((result) => {
-    console.log(result)
+  Event.find({ userId: req.decoded._doc._id }).then((result) => {
     res.json(result)
   })
 });
@@ -22,7 +19,7 @@ router.post('/', (req, res) => {
       location,
       medication,
       notes,
-      userId: req.decoded._id
+      userId: req.decoded._doc._id
     });
 
     event.save((err, result) => {

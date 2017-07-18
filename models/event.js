@@ -9,6 +9,7 @@ const eventSchema = new Schema({
     location: { type: String },
     medication: { type: String },
     notes: { type: String },
+    userId: { type: Schema.Types.ObjectId }
 })
 
 const Event = mongoose.model('Event', eventSchema);
