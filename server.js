@@ -50,7 +50,7 @@ app.use('/users', UsersRouter);
 app.use('/events', authMiddleware, EventsRouter);
 
 
-const DATABASE_URL = process.env.DATABASE_URL ||
+const DATABASE_URL = process.env.MLAB_DATABASE_URL ||
                      global.DATABASE_URL ||
                      'mongodb://localhost/capstone';
 const PORT = process.env.PORT || 8080;
