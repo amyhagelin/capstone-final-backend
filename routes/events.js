@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
       console.log(result);
       res.send(result);
     })
-
+    // console log to e sure we've hit route
     // console.log(req.body);
 });
 

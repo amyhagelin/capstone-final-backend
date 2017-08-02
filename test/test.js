@@ -9,7 +9,7 @@ const {User} = require('../models/user');
 
 const {closeServer, runServer, app} = require('../server');
 
-describe('API Resource', function() {
+xdescribe('API Resource', function() {
 	before(function() {
 		return runServer();
 	});
