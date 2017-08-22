@@ -15,7 +15,7 @@ router.post('/login', (req, res) => {
         }
 
         if (!user) {
-           res.status(401).json({ message: 'Wrong credentials' })  
+           return res.status(401).json({ message: 'Wrong credentials' })  
         }
 
         user.validatePassword(password).then((isValid) => {
