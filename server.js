@@ -46,7 +46,6 @@ const authMiddleware = function(req, res, next) {
 }
 
 app.use('/users', UsersRouter);
-// app.use('/events', EventsRouter);
 app.use('/events', authMiddleware, EventsRouter);
 
 
