@@ -56,11 +56,6 @@ const PORT = process.env.PORT || 8080;
 
 let server;
 
-
-// mlab user: amyhagelin password: thinkful
-// mongo ds135552.mlab.com:35552/thinkfulfinalcapstone -u amyhagelin -p thinkful
-// Heroku config vars DATABASE_URL mongodb://amyhagelin:thinkful@ds135552.mlab.com:35552/thinkfulfinalcapstone
-
 // this function connects to our database, then starts the server
 function runServer(databaseUrl=DATABASE_URL, port=PORT) {
   return new Promise((resolve, reject) => {
